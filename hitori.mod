@@ -141,4 +141,8 @@ subject to {
         }
     }
     // TODO: Add third constraint
+    Detect_Closed_Shapes:
+    forall(n in 1..size_of_board-1){
+        
+    }
 }
