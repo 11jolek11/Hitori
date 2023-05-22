@@ -38,7 +38,7 @@ def check(element: list):
 
 
 size = 7
-for n in range(1, 6):
+for n in range(1, 7):
 # for n in range(1, 2):
   for x_i in range(size, 2*size):
     for y_i in range(size, 2*size):
@@ -72,3 +72,35 @@ for n in range(1, 6):
         # cover[extra_x][extra_y] = 9
       # print(tracker)
       check(temp)
+
+
+# size = 7
+# for n in range(1, 6):
+# # for n in range(1, 2):
+#   for x_i in range(size, 2*size):
+#     for y_i in range(size, 2*size):
+#   # for x_i in range(0, 1*size):
+#   #   for y_i in range(0, 1*size):
+#       extra_x, extra_y = x_i-n, y_i-n
+#       # n = 3
+#       temp = []
+#       counter = 0
+#       tracker = []
+#       for i in range(n+1):
+#         temp.append(table[extra_x + i][extra_y + n-i])
+#         counter += table[extra_x + i][extra_y + n-i] + table[extra_x + i+n][extra_y + 2*n-i] + table[extra_x + i][extra_y + i+n] + table[extra_x + i+n][extra_y + i]
+#         tracker.append((extra_x + i, extra_y + n-i))
+#         # print(([extra_x + i+n],[extra_y + 2*n-i]))
+#         temp.append(table[extra_x + i+n][extra_y + 2*n-i])
+#         tracker.append((extra_x + i+n, extra_y + 2*n-i))
+
+#         temp.append(table[extra_x + i][extra_y + i+n])
+#         tracker.append((extra_x + i, extra_y + n+i))
+
+#         temp.append(table[extra_x + i+n][extra_y + i])
+#         tracker.append((extra_x + i + n, extra_y + i))
+#       # print(counter)
+#       # poniewz przejdzie dwa razy
+#       if counter >= n*8:
+#         print(tracker)
+#         raise ValueError("Detected 1")
