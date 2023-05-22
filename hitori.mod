@@ -74,7 +74,7 @@ int size_of_board = 2;
 range range_board_size = 1..size_of_board;
 
 int size_of_decision = size_of_board*3;
-range range_board_decision = 1..size_of_decision;
+range range_decision_size = 1..size_of_decision;
 
 int search_depth = size_of_board - 1;
 range range_search_depth = 1..search_depth;
@@ -86,13 +86,33 @@ int board_state[range_unique_values][range_board_size][range_board_size] =
 
 
 // decision 0 - white, 1 - black
-dvar boolean decision[range_board_decision][range_board_decision];
+dvar boolean decision[range_decision_size][range_decision_size];
 
-dexpr float total_coverage = sum(i in range_board_decision) sum(j in range_board_decision) decision[i][j];
+dexpr float total_coverage = sum(i in range_decision_size) sum(j in range_decision_size) decision[i][j];
 
 maximize total_coverage;
 
 subject to {
+    Ones_In_Left_Support_Columns:
+    forall(y in range_board_size){
+        sum(i in range_decision_size) decision[i][y] == size_of_decision;
+    }
+
+    Ones_In_Right_Support_Columns:
+    forall(y in range_board_size){
+        sum(i in range_decision_size) decision[i][y+2*size_of_board] == size_of_decision;
+    }
+
+    Ones_In_Upper_Support_Rows:
+    forall(x in range_board_size){
+        sum(i in range_decision_size) decision[x][i] == size_of_decision;
+    }
+
+    Ones_In_Bottom_Support_Rows:
+    forall(x in range_board_size){
+        sum(i in range_decision_size) decision[x+2*size_of_board][i] == size_of_decision;
+    }
+
     Repeating_Numbers_in_Rows:
     forall(r in range_unique_values) {
         forall(x in range_board_size) {
