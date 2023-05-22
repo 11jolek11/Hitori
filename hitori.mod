@@ -10,7 +10,7 @@
 // range range_unique_values = 1..unique_values;
 
 // int size_of_board = 5;
-// range range_size = 1..size_of_board;
+// range range_board_size = 1..size_of_board;
 
 // int search_depth = size_of_board - 1;
 // range range_search_depth = 1..search_depth;
@@ -27,7 +27,7 @@
 //      [8, 7, 1, 4, 2, 3, 5, 6],
 //  ];
 
-// int board_state[range_unique_values][range_size][range_size] = 
+// int board_state[range_unique_values][range_board_size][range_board_size] = 
 // [
 //     [
 //         [0, 0, 0, 1, 0], 
@@ -71,50 +71,53 @@ int unique_values = 2;
 range range_unique_values = 1..unique_values;
 
 int size_of_board = 2;
-range range_size = 1..size_of_board;
+range range_board_size = 1..size_of_board;
+
+int size_of_decision = size_of_board*3;
+range range_board_decision = 1..size_of_decision;
 
 int search_depth = size_of_board - 1;
 range range_search_depth = 1..search_depth;
 
 
-int board_state[range_unique_values][range_size][range_size] = 
+int board_state[range_unique_values][range_board_size][range_board_size] = 
 [[[0, 1], [0, 0]], [[1, 0], [1, 1]]];
 
 
 
 // decision 0 - white, 1 - black
-dvar boolean decision[range_size][range_size];
+dvar boolean decision[range_board_decision][range_board_decision];
 
-dexpr float total_coverage = sum(i in range_size) sum(j in range_size) decision[i][j];
+dexpr float total_coverage = sum(i in range_board_decision) sum(j in range_board_decision) decision[i][j];
 
 maximize total_coverage;
 
 subject to {
     Repeating_Numbers_in_Rows:
     forall(r in range_unique_values) {
-        forall(x in range_size) {
-            sum(i in range_size) decision[x][i]*board_state[r][x][i] <= 1;
+        forall(x in range_board_size) {
+            sum(i in range_board_size) decision[x+size_of_board][i+size_of_board]*board_state[r][x][i] <= 1;
         }
     }
 
     Repeating_Numbers_in_Columns:
     forall(r in range_unique_values) {
-        forall(y in range_size) {
-            sum(i in range_size) decision[i][y]*board_state[r][i][y] <= 1;
+        forall(y in range_board_size) {
+            sum(i in range_board_size) decision[i+size_of_board][y+size_of_board]*board_state[r][i][y] <= 1;
         }
     }
     
     Adjacent_Black_by_Row:
-    forall(r in range_size) {
+    forall(r in range_board_size) {
         forall(y in range_search_depth) {
-            decision[r][y] + decision[r][y+1] <= 1;
+            decision[r+size_of_board][y+size_of_board] + decision[r+size_of_board][y+1+size_of_board] <= 1;
         }
     }
 
     Adjacent_Black_by_Column:
-    forall(c in range_size) {
+    forall(c in range_board_size) {
         forall(x in range_search_depth) {
-            decision[x][c] + decision[x+1][c] <= 1;
+            decision[x+size_of_board][c+size_of_board] + decision[x+1+size_of_board][c+size_of_board] <= 1;
         }
     }
     // TODO: Add third constraint
