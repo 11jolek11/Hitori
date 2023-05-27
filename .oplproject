@@ -10,6 +10,16 @@
 			</ref>
             		
         </config>
+        		
+        <config default="false" name="Konfiguracja2" category="opl">
+            			
+            <ref name="hitori.mod" type="model">
+			</ref>
+            			
+            <ref name="task.dat" type="data">
+			</ref>
+            		
+        </config>
         	
     </configs>
     	

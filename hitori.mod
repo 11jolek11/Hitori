@@ -4,10 +4,12 @@
  * Creation Date: Apr 30, 2023 at 5:36:57 PM
  *********************************************/
 
-int unique_values = 2;
+// int unique_values = 2;
+int unique_values = ...;
 range range_unique_values = 1..unique_values;
 
-int size_of_board = 2;
+// int size_of_board = 2;
+int size_of_board = ...;
 range range_board_size = 1..size_of_board;
 
 int size_of_decision = size_of_board*3;
@@ -18,7 +20,11 @@ range range_search_depth = 1..search_depth;
 
 //int support = 0;
 
-int board_state[range_unique_values][range_board_size][range_board_size] = [[[0, 1], [0, 0]], [[1, 0], [1, 1]]];
+// int board_state[range_unique_values][range_board_size][range_board_size] = [[[0, 1], [0, 0]], [[1, 0], [1, 1]]];
+int board_state[range_unique_values][range_board_size][range_board_size] = ...;
+
+// [[[0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [1, 1, 1, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 1]], [[1, 1, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0]], [[0, 0, 0, 0, 1], [0, 1, 0, 0, 0], [0, 0, 0, 1, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 1, 0, 0, 0]], [[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 1, 0, 0], [1, 0, 0, 0, 0]]]
+
 
 dvar boolean decision[range_decision_size][range_decision_size];
 
