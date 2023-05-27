@@ -13,8 +13,8 @@ range range_board_size = 1..size_of_board;
 int size_of_decision = size_of_board*3;
 range range_decision_size = 1..size_of_decision;
 
-int search_depth = size_ofze_of_board - 1;
-range r ange_search_depth = 1..search_depth;
+int search_depth = size_of_board - 1;
+range range_search_depth = 1..search_depth;
 
 //int support = 0;
 
@@ -46,14 +46,14 @@ subject to {
     Repeating_Numbers_in_Rows:
     forall(r in range_unique_values)
         forall(x in range_board_size)
-            sum(i in range_board_size) board_state[r][x][i] <= 1;
-            // sum(i in range_board_size) decision[x+size_of_board][i+size_of_board]*board_state[r][x][i] <= 1;
+            // sum(i in range_board_size) board_state[r][x][i] <= 1;
+            sum(i in range_board_size) (1-decision[x+size_of_board][i+size_of_board])*board_state[r][x][i] <= 1;
 
     Repeating_Numbers_in_Columns:
     forall(r in range_unique_values)
         forall(y in range_board_size)
-            sum(i in range_board_size) board_state[r][i][y] <= 1;
-            // sum(i in range_board_size) decision[i+size_of_board][y+size_of_board]*board_state[r][i][y] <= 1;
+            // sum(i in range_board_size) board_state[r][i][y] <= 1;
+            sum(i in range_board_size) (1-decision[i+size_of_board][y+size_of_board])*board_state[r][i][y] <= 1;
 
     Adjacent_Black_by_Row:
     forall(r in range_board_size)
@@ -65,7 +65,7 @@ subject to {
         forall(x in range_search_depth)
             decision[x+size_of_board][c+size_of_board] + decision[x+1+size_of_board][c+size_of_board] <= 1;
             
-      
+    Closed_Shapes:
     forall(n in 1..size_of_board-1){
         forall(y_pos in size_of_board+1..2*size_of_board){
             forall(x_pos in size_of_board+1..2*size_of_board){
