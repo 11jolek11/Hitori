@@ -34,3 +34,45 @@ expression = sum([decison[i][j] for i in range(len(decison)) for j in range(len(
 mdl.maximize(expression)
 
 mdl.solve()
+
+
+def support_columns(decison):
+    total_sum = 0
+    # Ones_In_Left_Support_Columns
+    for y in range(size_of_board):
+        for i in range(size_of_decision):
+            total_sum += decison[i][y]
+
+    # Ones_In_Right_Support_Columns
+    for y in range(size_of_board):
+        for i in range(size_of_decision):
+            total_sum += decison[i][y-1+2*size_of_board]
+
+    # Ones_In_Upper_Support_Rows
+    for x in range(size_of_board):
+        for i in range(size_of_decision):
+            total_sum += decison[x][i]
+
+    # Ones_In_Bottom_Support_Rows
+    for x in range(size_of_board):
+        for i in range(size_of_decision):
+            total_sum += decison[x-1+2*size_of_board][i]
+    
+    if total_sum == size_of_decision*size_of_board*4:
+        return 1
+    else:
+        return 0
+    
+def repeating_numbers(board_state):
+    z_dim = len(board_state)
+    y_dim = len(board_state[0])
+    x_dim = len(board_state[0][0])
+    for z in range(z_dim):
+        for y in range(y_dim):
+            for x in range(x_dim):
+                pass
+    
+
+def adjacent_black(decision):
+    pass
+
