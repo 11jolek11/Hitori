@@ -13,8 +13,8 @@ range range_board_size = 1..size_of_board;
 int size_of_decision = size_of_board*3;
 range range_decision_size = 1..size_of_decision;
 
-int search_depth = size_of_board - 1;
-range range_search_depth = 1..search_depth;
+int search_depth = size_ofze_of_board - 1;
+range r ange_search_depth = 1..search_depth;
 
 //int support = 0;
 
