@@ -4,14 +4,14 @@
     	
     <configs>
         		
-        <config default="true" name="Konfiguracja1" category="opl">
+        <config default="false" name="Konfiguracja1" category="opl">
             			
             <ref name="hitori.mod" type="model">
 			</ref>
             		
         </config>
         		
-        <config default="false" name="Konfiguracja2" category="opl">
+        <config default="true" name="Konfiguracja2" category="opl">
             			
             <ref name="hitori.mod" type="model">
 			</ref>

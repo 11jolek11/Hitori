@@ -70,6 +70,8 @@ subject to {
     forall(c in range_board_size)
         forall(x in range_search_depth)
             decision[x+size_of_board][c+size_of_board] + decision[x+1+size_of_board][c+size_of_board] <= 1;
+    
+    // TODO: dodaj ograniczenie aby nie zazanczała nie potrzebnie komórek
             
     Closed_Shapes:
     forall(n in 1..size_of_board-1){

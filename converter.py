@@ -10,9 +10,9 @@ def convert(board:np.ndarray):
             for x in range(board.shape[1]):
                 if board[y][x] == unique_numbers[number]:
                     result[number][y][x] = 1
-    print("######################################")
-    print(result)
-    print("######################################")
+    # print("######################################")
+    # # print(result)
+    # print("######################################")
     result = result.astype(int)
     print(result.dtype)
     return result.tolist()
@@ -37,11 +37,13 @@ if __name__ == "__main__":
     #         ]
     #     )
     # print(convert(test))
-    HITORI_PROBLEM_1 = np.asarray(( (2, 2, 1, 5, 3),
+    HITORI_PROBLEM_1 = np.asarray(( 
+                     (2, 2, 1, 5, 3),
                      (2, 3, 1, 4, 5),
                      (1, 1, 1, 3, 5),
                      (1, 3, 5, 4, 2),
                      (5, 4, 3, 2, 1),
                    ))
+    print(len(convert(HITORI_PROBLEM_1)))
     print(convert(HITORI_PROBLEM_1))
 
