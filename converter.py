@@ -9,13 +9,9 @@ def convert(board:np.ndarray):
             for x in range(board.shape[1]):
                 if board[y][x] == unique_numbers[number]:
                     result[number][y][x] = 1
-    # print("######################################")
-    # # print(result)
-    # print("######################################")
     result = result.astype(int)
-    # print(result.dtype)
     return result.tolist()
-    # return result
+
 
 def writer(board:np.ndarray, dat_file: str="./task.dat"):
     size_of_board = len(board)
@@ -31,24 +27,6 @@ def writer(board:np.ndarray, dat_file: str="./task.dat"):
         file.write(content)
 
 if __name__ == "__main__":
-    # test = np.array([[2, 2], [2, 3]])
-    # test = np.array(
-    #     [
-    #         [2, 3, 2, 1, 5],
-    #         [2, 4, 1, 3, 5],
-    #         [2, 1, 2, 2, 5],
-    #         [1, 5, 2, 4, 3],
-    #         [2, 2, 5, 5, 2]
-    #     ]
-    # )
-    # test = np.array(
-    #         [
-    #             [2, 1],
-    #             [2, 2]
-    #         ]
-    #     )
-    # print(convert(test))
-
     #-----------------------------------------------------------------------------
     # Initialize the problem data
     #-----------------------------------------------------------------------------
@@ -59,7 +37,6 @@ if __name__ == "__main__":
                         (1, 1),
                         (2, 1),
                     )
-
 
     # Problem 0 (for test). A solution is:
     #   * 2 *
