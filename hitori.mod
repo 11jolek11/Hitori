@@ -30,7 +30,9 @@ dvar boolean decision[range_decision_size][range_decision_size];
 
 dexpr float total_coverage = sum(i in range_decision_size) sum(j in range_decision_size) decision[i][j];
 
-maximize total_coverage;
+// maximize total_coverage;
+minimize total_coverage;
+
 
 subject to {
     Ones_In_Left_Support_Columns:
@@ -54,12 +56,17 @@ subject to {
         forall(x in range_board_size)
             // sum(i in range_board_size) board_state[r][x][i] <= 1;
             sum(i in range_board_size) (1-decision[x+size_of_board][i+size_of_board])*board_state[r][x][i] <= 1;
+            // sum(i in range_board_size) (decision[x+size_of_board][i+size_of_board])*board_state[r][x][i] <= 1;
 
     Repeating_Numbers_in_Columns:
     forall(r in range_unique_values)
         forall(y in range_board_size)
             // sum(i in range_board_size) board_state[r][i][y] <= 1;
             sum(i in range_board_size) (1-decision[i+size_of_board][y+size_of_board])*board_state[r][i][y] <= 1;
+            // sum(i in range_board_size) (decision[i+size_of_board][y+size_of_board])*board_state[r][i][y] <= 1;
+    
+    Innocent_Cells:
+
 
     Adjacent_Black_by_Row:
     forall(r in range_board_size)
@@ -72,6 +79,12 @@ subject to {
             decision[x+size_of_board][c+size_of_board] + decision[x+1+size_of_board][c+size_of_board] <= 1;
     
     // TODO: dodaj ograniczenie aby nie zazanczała nie potrzebnie komórek
+    // komorek wypełnionych tych samymi liczbami przy uwzględnienu decyzji musi być tyle samo co wierszy w których występuje te same liczby
+
+    // Dla każdej komórki dla każdego numeru (podwojna petla):
+    // zsumuj ze sobą wartości z [baord względem kolumn i wierszy] <-- oznaczam jako B*
+    // zsumuj ze sobą wartości z [baord * (1-decyzja dla tej komórki) względem kolumn i wierszy] <-- oznaczam jako A*
+    // jeśli zarówno dla kolumn i dla wierszy suma A* jest <= od B* ale musi byc większa od 0
             
     Closed_Shapes:
     forall(n in 1..size_of_board-1){
