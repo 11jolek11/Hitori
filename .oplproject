@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?><project>
+    	
+    <version>1.0</version>
+    	
+    <configs>
+        		
+        <config default="false" name="Konfiguracja1" category="opl">
+            			
+            <ref name="hitori.mod" type="model">
+			</ref>
+            		
+        </config>
+        		
+        <config default="true" name="Konfiguracja2" category="opl">
+            			
+            <ref name="hitori.mod" type="model">
+			</ref>
+            			
+            <ref name="task.dat" type="data">
+			</ref>
+            		
+        </config>
+        	
+    </configs>
+    	
+
+</project>

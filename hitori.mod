@@ -1,87 +1,122 @@
 /*********************************************
- * OPL 22.1.1.0 Model
+ * OPL 22.1.1 Model
  * Author: Andrzej Dabrowski
  * Creation Date: Apr 30, 2023 at 5:36:57 PM
  *********************************************/
 
+// int unique_values = 2;
+int unique_values = ...;
+range range_unique_values = 1..unique_values;
 
-// int size_of_board = 8;
+// int size_of_board = 2;
+int size_of_board = ...;
+range range_board_size = 1..size_of_board;
 
-// range range_size = 1..size_of_board;
-
-// int board_state[range_size][range_size] = [
-//     [4, 8, 1,6, 3, 2, 5, 7],
-//     [3, 6, 7, 2, 1, 6, 5, 4],
-//     [2, 3, 4, 8, 2, 8, 6, 1],
-//     [4, 1, 6, 5, 7, 7, 3, 5],
-//     [7, 2, 3, 1, 8, 5, 1, 2],
-//     [3, 5, 6, 7, 3, 1, 8, 4],
-//     [6, 4, 2, 3, 5, 4, 7, 8],
-//     [8, 7, 1, 4, 2, 3, 5, 6],
-// ];
-
-int size_of_board = 5;
-
-range range_size = 1..size_of_board;
-
+int size_of_decision = size_of_board*3;
+range range_decision_size = 1..size_of_decision;
 
 int search_depth = size_of_board - 1;
-
 range range_search_depth = 1..search_depth;
 
-int board_state[range_size][range_size] = [
-    [2, 3, 2, 1, 5],
-    [2, 4, 1, 3, 5],
-    [2, 1, 2, 2, 5],
-    [1, 5, 2, 4, 3],
-    [2, 2, 5, 5, 2]];
+//int support = 0;
 
-// decision 0 - white, 1 - black
-dvar boolean decision[range_size][range_size];
+// int board_state[range_unique_values][range_board_size][range_board_size] = [[[0, 1], [0, 0]], [[1, 0], [1, 1]]];
+int board_state[range_unique_values][range_board_size][range_board_size] = ...;
 
-dexpr float total_coverage = sum(i in range_size) sum(j in range_size) decision[i][j];
+// [[[0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [1, 1, 1, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 1]], [[1, 1, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0]], [[0, 0, 0, 0, 1], [0, 1, 0, 0, 0], [0, 0, 0, 1, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 1, 0, 0, 0]], [[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 1, 0, 0], [1, 0, 0, 0, 0]]]
 
-maximize total_coverage;
+
+dvar boolean decision[range_decision_size][range_decision_size];
+
+dexpr float total_coverage = sum(i in range_decision_size) sum(j in range_decision_size) decision[i][j];
+
+// maximize total_coverage;
+minimize total_coverage;
+
 
 subject to {
+    Ones_In_Left_Support_Columns:
+    forall(y in range_board_size)
+        sum(i in range_decision_size) decision[i][y] == size_of_decision;
+
+    Ones_In_Right_Support_Columns:
+    forall(y in range_board_size)
+        sum(i in range_decision_size) decision[i][y+2*size_of_board] == size_of_decision;
+
+    Ones_In_Upper_Support_Rows:
+    forall(x in range_board_size)
+        sum(i in range_decision_size) decision[x][i] == size_of_decision;
+
+    Ones_In_Bottom_Support_Rows:
+    forall(x in range_board_size)
+        sum(i in range_decision_size) decision[x+2*size_of_board][i] == size_of_decision;
+
     Repeating_Numbers_in_Rows:
-    forall(r in range_size) {
-        forall(x in range_size) {
-            forall(y in range_size) {
-                if (board_state[x][r] == board_state[y][r] ) {
-                    decision[r][x] + decision[r][y] > 0;
-                }
-            }
-        }
-    }
+    forall(r in range_unique_values)
+        forall(x in range_board_size)
+            // sum(i in range_board_size) board_state[r][x][i] <= 1;
+            sum(i in range_board_size) (1-decision[x+size_of_board][i+size_of_board])*board_state[r][x][i] <= 1;
+            // sum(i in range_board_size) (decision[x+size_of_board][i+size_of_board])*board_state[r][x][i] <= 1;
 
     Repeating_Numbers_in_Columns:
-    forall(c in range_size) {
-        forall(x in range_size) {
-            forall(y in range_size) {
-                if (board_state[c][x] == board_state[c][y] ) {
-                    decision[c][x] + decision[c][y] > 0;
-                }
-            }
-        }
-    }
+    forall(r in range_unique_values)
+        forall(y in range_board_size)
+            // sum(i in range_board_size) board_state[r][i][y] <= 1;
+            sum(i in range_board_size) (1-decision[i+size_of_board][y+size_of_board])*board_state[r][i][y] <= 1;
+            // sum(i in range_board_size) (decision[i+size_of_board][y+size_of_board])*board_state[r][i][y] <= 1;
+    
+    Innocent_Cells:
+
 
     Adjacent_Black_by_Row:
-    forall(r in range_size) {
-        forall(y in search_depth) {
-            if (board_state[y][r] == board_state[y+1][r] ) {
-                decision[r][y] + decision[r][y+1] <= 2;
-            }
-        }
-    }
+    forall(r in range_board_size)
+        forall(y in range_search_depth)
+            decision[r+size_of_board][y+size_of_board] + decision[r+size_of_board][y+1+size_of_board] <= 1;
 
     Adjacent_Black_by_Column:
-    forall(c in range_size) {
-        forall(x in search_depth) {
-                if (board_state[c][x] == board_state[c][y] ) {
-                    decision[c][x] + decision[c][y] <= 2;
+    forall(c in range_board_size)
+        forall(x in range_search_depth)
+            decision[x+size_of_board][c+size_of_board] + decision[x+1+size_of_board][c+size_of_board] <= 1;
+    
+    // TODO: dodaj ograniczenie aby nie zazanczała nie potrzebnie komórek
+    // komorek wypełnionych tych samymi liczbami przy uwzględnienu decyzji musi być tyle samo co wierszy w których występuje te same liczby
+
+    // Dla każdej komórki dla każdego numeru (podwojna petla):
+    // zsumuj ze sobą wartości z [baord względem kolumn i wierszy] <-- oznaczam jako B*
+    // zsumuj ze sobą wartości z [baord * (1-decyzja dla tej komórki) względem kolumn i wierszy] <-- oznaczam jako A*
+    // jeśli zarówno dla kolumn i dla wierszy suma A* jest <= od B* ale musi byc większa od 0
+            
+    Closed_Shapes:
+    forall(n in 1..size_of_board-1){
+        forall(y_pos in size_of_board+1..2*size_of_board){
+            forall(x_pos in size_of_board+1..2*size_of_board){
+				sum(p in 1..n+1) (decision[y_pos-1+p][x_pos+1+n-p] // ok 
+				+ decision[y_pos-1+p][x_pos-1-n+p] //ok
+				+ decision[y_pos+1-p][x_pos+1+n-p] 
+				+ decision[y_pos+1-p][x_pos-1-n+p]) <= n*4+4 - 1;
+//              sum(p in 1..n+1) decision[y_pos-1+p][x_pos+1+n-p] <= n+1 &&
+//              sum(p in 1..n+1) decision[y_pos-1+p][x_pos-1-n+p] <= n+1 &&
+//              sum(p in 1..n+1) decision[y_pos+1-p][x_pos+1+n-p] <= n+1 &&
+//              sum(p in 1..n+1) decision[y_pos+1-p][x_pos-1-n+p] <= n+1;
             }
-        }
-    }
-    // TODO: Add third constraint
+          }
+        }                                    
+
+//    forall(n in 1..size_of_board)
+//        forall(y_pos in size_of_board..2*size_of_board)
+//            forall(x_pos in size_of_board..2*size_of_board)
+//                sum(x in 1..n) sum (y in 1..n) decision[y_pos + n - y + 1][x + x_pos] < n + 1 &&
+//                sum(x in 1..n) sum (y in 1..n) decision[y_pos + n - y + 1 - n][x + x_pos + n] < n + 1 &&
+//                sum(x in 1..n) sum (y in 1..n) decision[y_pos - y - 1 + n][x_pos - x + 1] < n+1 && 
+//                sum(x in 1..n) sum (y in 1..n) decision[y_pos - y - 1 + n + n][x_pos - x + 1 + n] < n+1;
+
+
+//	 forall(n in 1..size_of_board) {
+//         forall(y_pos in size_of_board..2*size_of_board) {
+//             forall(x_pos in size_of_board..2*size_of_board) {
+//                 sum(x in 1..n) ( sum (y in 1..n) (decision[y_pos + n - y + 1][x + x_pos] + decision[y_pos + n - y + 1 - n][x + x_pos + n - 1] + decision[y_pos - y - 1 + n][x_pos - x + 1] + decision[y_pos - y - 1 + n + n][x_pos - x + 1 + n] ))<= 4*n+4;
+
+//                 sum(x in 1..n) ( sum (y in 1..n) (decision[y_pos + n - y + 1][x + x_pos] + decision[y_pos + n - y + 1 - n][x + x_pos + n] + decision[y_pos - y - 1 + n][x_pos - x + 1] + decision[y_pos - y - 1 + n + n][x_pos - x + 1 + n] ))<= 4*n+4;
+// }}}			
+//                sum(x in 1..n) sum(y in 1..n) decision[y_pos + n - y+1][x + x_pos] + decision[y_pos + n - y + 1 - n][x + x_pos + n] +decision[x + x_pos + n][y_pos + n - y + 1 + n]+ decision[x + x_pos][y_pos + n - y + 1] <= 4*n+4;
 }
