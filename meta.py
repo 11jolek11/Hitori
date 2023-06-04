@@ -1,320 +1,35 @@
-# import random
-
-# # Function to calculate the score of the current state
-# def calculate_score(matrix):
-#     score = 0
-#     n = len(matrix)
-
-#     # Check rows for duplicates
-#     for i in range(n):
-#         row = set()
-#         for j in range(n):
-#             if matrix[i][j] in row:
-#                 score += 1
-#             else:
-#                 row.add(matrix[i][j])
-
-#     # Check columns for duplicates
-#     for j in range(n):
-#         column = set()
-#         for i in range(n):
-#             if matrix[i][j] in column:
-#                 score += 1
-#             else:
-#                 column.add(matrix[i][j])
-
-#     return score
-
-
-# # Function to get neighbors of a given state
-# def get_neighbors(matrix):
-#     neighbors = []
-
-#     n = len(matrix)
-
-#     for i in range(n):
-#         for j in range(n):
-#             neighbor = [row[:] for row in matrix]  # Create a copy of the matrix
-
-#             # Flip the value (0 -> 1 or 1 -> 0) at position (i, j)
-#             neighbor[i][j] = 1 - neighbor[i][j]
-
-#             neighbors.append(neighbor)
-
-#     return neighbors
-
-
-# # Function to apply Tabu Search to solve Hitori puzzles
-# def solve_hitori_puzzle(puzzle):
-#     n = len(puzzle)
-#     tabu_list = []
-#     current_state = puzzle
-
-#     # Set the maximum number of iterations and the tabu list size
-#     max_iterations = 100
-#     tabu_list_size = 10
-
-#     for iteration in range(max_iterations):
-#         current_score = calculate_score(current_state)
-
-#         if current_score == 0:  # Puzzle solved
-#             return current_state
-
-#         neighbors = get_neighbors(current_state)
-
-#         best_neighbor = None
-#         best_neighbor_score = float('inf')
-
-#         for neighbor in neighbors:
-#             if neighbor not in tabu_list:
-#                 neighbor_score = calculate_score(neighbor)
-
-#                 if neighbor_score < best_neighbor_score:
-#                     best_neighbor = neighbor
-#                     best_neighbor_score = neighbor_score
-
-#         if best_neighbor is None:  # No non-tabu neighbors found
-#             return current_state
-
-#         tabu_list.append(best_neighbor)
-
-#         if len(tabu_list) > tabu_list_size:
-#             tabu_list.pop(0)  # Remove the oldest entry from the tabu list
-
-#         current_state = best_neighbor
-
-#     return current_state
-
-
-# # Example usage
-# puzzle = [
-#     [1, 2, 2, 4],
-#     [1, 1, 3, 4],
-#     [3, 2, 1, 3],
-#     [4, 3, 4, 2]
-# ]
-
-# solution = solve_hitori_puzzle(puzzle)
-
-# # Printing the solution
-# for row in solution:
-#     print(row)
-
-# ###################################################################################################################
-# ###################################################################################################################
-# ###################################################################################################################
-# ###################################################################################################################
-# ###################################################################################################################
-
-
-# import random
-# import numpy as np
-
-# # Define the Hitori puzzle board
-# # The board is represented as a 2D array, where 0 represents an empty cell and any positive number represents a shaded cell
-# # For example, board[row][col] = 1 represents a shaded cell at position (row, col)
-
-# # Define the size of the puzzle board
-# BOARD_SIZE = 5
-
-# # Define the initial state of the puzzle board
-# initial_board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=int)
-
-# # Define the Tabu Search parameters
-# MAX_ITERATIONS = 100000
-# TABU_TENURE = 100
-
-# # Define the Hitori puzzle instance
-# # The puzzle instance is represented as a 2D array, where each element represents the value of a cell in the puzzle
-# puzzle_instance = np.array([[2, 2, 3, 1, 4],
-#                             [5, 5, 3, 3, 1],
-#                             [5, 4, 2, 3, 1],
-#                             [1, 5, 4, 2, 3],
-#                             [1, 1, 1, 4, 4]])
-
-
-
-
-
-
-
-# # Function to calculate the fitness score of a solution
-# def calculate_fitness(solution):
-#     """
-#     Calculate the fitness score of a solution.
-
-#     Parameters:
-#     - solution: 2D array representing the solution (puzzle board)
-
-#     Returns:
-#     - fitness_score: Fitness score of the solution
-#     """
-#     # Initialize a set to store visited numbers
-#     visited_numbers = set()
-
-#     # Calculate the fitness score by counting the number of unique numbers in each row and column
-#     fitness_score = 0
-#     for row in range(BOARD_SIZE):
-#         visited_numbers.clear()
-#         for col in range(BOARD_SIZE):
-#             cell_value = solution[row][col]
-#             if cell_value == 0 or cell_value in visited_numbers:
-#                 fitness_score += 1
-#             visited_numbers.add(cell_value)
-
-#     for col in range(BOARD_SIZE):
-#         visited_numbers.clear()
-#         for row in range(BOARD_SIZE):
-#             cell_value = solution[row][col]
-#             if cell_value == 0 or cell_value in visited_numbers:
-#                 fitness_score += 1
-#             visited_numbers.add(cell_value)
-#     print(fitness_score)
-#     return fitness_score
-
-# # Function to generate the initial solution
-# def generate_initial_solution():
-#     """
-#     Generate the initial solution.
-
-#     Returns:
-#     - solution: 2D array representing the initial solution (puzzle board)
-#     """
-#     # Create a copy of the initial board
-#     solution = np.copy(initial_board)
-
-#     # Randomly shade cells in the solution based on the puzzle instance
-#     for row in range(BOARD_SIZE):
-#         for col in range(BOARD_SIZE):
-#             if random.random() < 0.5:
-#                 solution[row][col] = puzzle_instance[row][col]
-
-#     return solution
-
-# # Function to generate neighboring solutions
-# def generate_neighbors(solution):
-#     """
-#     Generate neighboring solutions for a given solution.
-
-#     Parameters:
-#     - solution: 2D array representing the current solution (puzzle board)
-
-#     Returns:
-#     - neighbors: List of neighboring solutions
-#     """
-#     neighbors = []
-
-#     # Iterate over each cell in the solution
-
-
-#     for row in range(BOARD_SIZE):
-#         for col in range(BOARD_SIZE):
-#             # Create a copy of the current solution
-#             neighbor = np.copy(solution)
-
-#             # Toggle the shading of the current cell
-#             neighbor[row][col] = 0 if neighbor[row][col] > 0 else puzzle_instance[row][col]
-
-#             # Add the neighbor to the list
-#             neighbors.append(neighbor)
-
-#     return neighbors
-
-# # Function to apply Tabu Search to solve the Hitori puzzle
-# def tabu_search():
-#     """
-#     Apply Tabu Search to solve the Hitori puzzle.
-
-#     Returns:
-#     - best_solution: 2D array representing the best solution found
-#     """
-#     # Generate the initial solution
-#     current_solution = generate_initial_solution()
-#     best_solution = np.copy(current_solution)
-#     best_fitness = calculate_fitness(best_solution)
-
-#     # Initialize the Tabu list
-#     tabu_list = []
-
-#     # Start the Tabu Search iterations
-#     iterations = 0
-#     while iterations < MAX_ITERATIONS:
-#         # Generate neighboring solutions
-#         neighbors = generate_neighbors(current_solution)
-
-#         # Select the best neighbor that is not in the Tabu list
-#         best_neighbor = None
-#         best_neighbor_fitness = float('inf')
-
-#         for neighbor in neighbors:
-#             neighbor_fitness = calculate_fitness(neighbor)
-
-#             if neighbor_fitness < best_neighbor_fitness and neighbor.tolist() not in tabu_list:
-#                 best_neighbor = neighbor
-#                 best_neighbor_fitness = neighbor_fitness
-
-#         # Update the current solution and best solution
-#         current_solution = best_neighbor
-
-#         if best_neighbor_fitness < best_fitness:
-#             best_solution = np.copy(best_neighbor)
-#             best_fitness = best_neighbor_fitness
-
-#         # Add the current solution to the Tabu list
-#         tabu_list.append(current_solution.tolist())
-
-#         # Remove the oldest solution from the Tabu list if it exceeds the Tabu tenure
-#         if len(tabu_list) > TABU_TENURE:
-#             tabu_list.pop(0)
-
-#         # Increment the iterations counter
-#         iterations += 1
-
-#     return best_solution
-
-# # Solve the Hitori puzzle using Tabu Search
-# solution = tabu_search()
-
-# # Print the solution
-# print("Solution:")
-# print(solution)
-
-
-
-# ###################################################################################################################
-# ###################################################################################################################
-# ###################################################################################################################
-# ###################################################################################################################
-# ###################################################################################################################
-
-
 import random
 import numpy as np
 
+
 # Define the Hitori puzzle board
-# The board is represented as a 2D array, where 0 represents an empty cell and any positive number represents a shaded cell
-# For example, board[row][col] = 1 represents a shaded cell at position (row, col)
 
 # Define the size of the puzzle board
 BOARD_SIZE = 5
 
-# Define the initial state of the puzzle board
 initial_board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=int)
 
-# Define the Tabu Search parameters
-MAX_ITERATIONS = 10000
-TABU_TENURE = 100
+# Define the parameters
+MAX_ITERATIONS = 1000
+TABU_MAX = 10
 
-# Define the Hitori puzzle instance
-# The puzzle instance is represented as a 2D array, where each element represents the value of a cell in the puzzle
 puzzle_instance = np.array([[2, 2, 3, 1, 4],
                             [5, 5, 3, 3, 1],
                             [5, 4, 2, 3, 1],
                             [1, 5, 4, 2, 3],
                             [1, 1, 1, 4, 4]])
 
-
 def count_repeating_numbers(matrix, target):
+    """
+    Count repeating number (target) in columns and rows
+
+    Parameters:
+    - matrix: 2D array representing the solution (puzzle board)
+    - target: symbol/number function is counting
+
+    Returns:
+    - count: Number of repeating numbers found
+    """
     count = 0
 
     # Check horizontally
@@ -338,9 +53,48 @@ def count_repeating_numbers(matrix, target):
                 count += 1 if consecutive_count == 2 else 0
             else:
                 consecutive_count = 0
-
     return count
 
+def count_adjacent_black(matrix, symbol=0):
+    """
+    Count shaded cells, which are next to each other in columns and rows
+
+    Parameters:
+    - matrix: 2D array representing the solution (puzzle board)
+    - symbol: symbol/number representing shaded cell
+
+    Returns:
+    - count: Number of shaded cells which are next to each other
+    """
+    count = 0
+    for cell_x in range(len(matrix)):
+        for cell_y in range(len(matrix)-1):
+            count += 1 if matrix[cell_y][cell_x] == 0 and matrix[cell_y+1][cell_x] == 0 else 0
+    for cell_y in range(len(matrix)):
+        for cell_x in range(len(matrix)-1):
+            count += 1 if matrix[cell_y][cell_x] == 0 and matrix[cell_y][cell_x+1] == 0 else 0
+    return count
+
+def detect_closed_shape(matrix, symbol=0):
+    temp = matrix
+    matrix = np.zeros((3*BOARD_SIZE, 3*BOARD_SIZE))
+    nb = matrix.shape[0]
+    na = temp.shape[0]
+    lower = (nb) // 2 - (na // 2) - 1
+    upper = (nb // 2) + (na // 2)
+    # print(upper)
+    # print(lower)
+    matrix[lower:upper, lower:upper] = temp
+    for n in range(BOARD_SIZE-1):
+        total = 0
+        for y in range(BOARD_SIZE, 2*BOARD_SIZE):
+            for x in range(BOARD_SIZE, 2*BOARD_SIZE):
+                for p in range(n):
+                    if matrix[y-1+p][x+1+n-p] + matrix[y-1+p][x-1-n+p] + matrix[y+1-p][x+1+n-p] + matrix[y+1-p][x-1-n+p] == 0:
+                        total += 4 
+        if total > 4*n + 4 -1:
+            return 10
+    return 0
 
 # Function to calculate the fitness score of a solution
 def calculate_fitness(solution):
@@ -377,6 +131,10 @@ def calculate_fitness(solution):
                 fitness_score += 1
             visited_numbers.add(cell_value)
 
+    fitness_score += 20*count_adjacent_black(solution)
+
+    fitness_score += detect_closed_shape(solution)
+
     return fitness_score
 
 # Function to generate the initial solution
@@ -387,7 +145,6 @@ def generate_initial_solution():
     Returns:
     - solution: 2D array representing the initial solution (puzzle board)
     """
-    # Create a copy of the initial board
     solution = np.copy(initial_board)
 
     # Randomly shade cells in the solution based on the puzzle instance
@@ -410,7 +167,6 @@ def generate_neighbors(solution):
             # Toggle the shading of the current cell
             neighbor[row][col] = 0 if neighbor[row][col] > 0 else puzzle_instance[row][col]
 
-
             neighbors.append(neighbor)
 
     return neighbors
@@ -424,7 +180,7 @@ def tabu_search():
 
     tabu_list = []
 
-    # Start the Tabu Search iterations
+    # Start the tabu search
     iterations = 0
     while iterations < MAX_ITERATIONS:
         # Generate neighboring solutions
@@ -463,18 +219,28 @@ def tabu_search():
         # Add the current solution to the Tabu list
         tabu_list.append(current_solution.tolist())
 
-        # Remove the oldest solution from the Tabu list if it exceeds the Tabu tenure
-        if len(tabu_list) > TABU_TENURE:
+        # Remove the oldest solution from the Tabu
+        if len(tabu_list) > TABU_MAX:
             tabu_list.pop(0)
 
-        # Increment the iterations counter
         iterations += 1
 
     return best_solution
 
 
-solution = tabu_search()
+def display(board:np.ndarray):
+    for y in range(board.shape[0]):
+        row = ""
+        for x in range(board.shape[0]):
+            value = "█" if board[y][x] == 0 else str(board[y][x])
+            row += f"{value} "
+        print(row)
 
-# Print the solution
-print("Solution:")
-print(solution)
+
+
+if __name__ == "__main__":
+    solution = tabu_search()
+
+    # Print the solution
+    print("Solution:")
+    display(solution)
