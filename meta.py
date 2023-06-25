@@ -108,6 +108,12 @@ def detect_closed_shape(matrix, symbol=0):
             return 10
     return 0
 
+def non_zero_decision(matrix):
+    if np.sum(matrix) == 0:
+        return 100
+    else:
+        return 0
+
 # Function to calculate the fitness score of a solution
 def calculate_fitness(solution):
     """
@@ -143,6 +149,8 @@ def calculate_fitness(solution):
     fitness_score += 20*count_adjacent_black(solution)
 
     fitness_score += detect_closed_shape(solution)
+
+    fitness_score += non_zero_decision(solution)
 
     return fitness_score
 
@@ -233,7 +241,7 @@ def tabu_search():
 
         iterations += 1
 
-    return best_solution
+    return best_solution, 
 
 
 def display(board:np.ndarray):
@@ -247,8 +255,9 @@ def display(board:np.ndarray):
 
 
 if __name__ == "__main__":
-    solution = tabu_search()
-
-    # Print the solution
-    print("Solution:")
-    display(solution)
+    for _ in range(20):
+        solution = tabu_search()
+        # Print the solution
+        print("Solution:")
+        display(solution[0])
+        print("#########################")
