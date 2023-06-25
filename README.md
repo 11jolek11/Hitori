@@ -7,4 +7,4 @@ problems.py - pzykładowe problemy hitori wraz z rozwiązaniami
 
 
 
-hitori_cp.py - plik z rozwiązaniem przy użyciu Constraint Programming służąca do testowania i sprawdzenia poprawności wyników hitori.mod
+hitori_cp.py - plik z rozwiązaniem przy użyciu Constraint Programming (z przykładów od IBM) służąca do testowania i sprawdzenia poprawności wyników hitori.mod
