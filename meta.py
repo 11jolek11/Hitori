@@ -1,5 +1,6 @@
 import random
 import numpy as np
+from problems import *
 
 
 # Define the Hitori puzzle board
@@ -13,11 +14,22 @@ initial_board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=int)
 MAX_ITERATIONS = 1000
 TABU_MAX = 10
 
-puzzle_instance = np.array([[2, 2, 3, 1, 4],
-                            [5, 5, 3, 3, 1],
-                            [5, 4, 2, 3, 1],
-                            [1, 5, 4, 2, 3],
-                            [1, 1, 1, 4, 4]])
+# puzzle_instance = np.array([[2, 2, 3, 1, 4],
+#                             [5, 5, 3, 3, 1],
+#                             [5, 4, 2, 3, 1],
+#                             [1, 5, 4, 2, 3],
+#                             [1, 1, 1, 4, 4]])
+
+
+# puzzle_instance = np.array(
+#                     [[2, 2, 1, 5, 3],
+#                      [2, 3, 1, 4, 5],
+#                      [1, 1, 1, 3, 5],
+#                      [1, 3, 5, 4, 2],
+#                      [5, 4, 3, 2, 1]]
+#                    )
+puzzle_instance = np.array(HITORI_PROBLEM_1)
+
 
 def count_repeating_numbers(matrix, target):
     """
@@ -96,11 +108,14 @@ def detect_closed_shape(matrix, symbol=0):
             return 10
     return 0
 
+def non_zero_decision(matrix):
+    if np.sum(matrix) == 0:
+        return 100
+    else:
+        return 0
+
 # Function to calculate the fitness score of a solution
 def calculate_fitness(solution):
-    # TODO: add penalty for repeating numbers (non-zero numbers)
-    # TODO: add penalty for adjacent black cells
-    # TODO: add penalty for closed structures
     """
     Calculate the fitness score of a solution.
 
@@ -135,6 +150,8 @@ def calculate_fitness(solution):
 
     fitness_score += detect_closed_shape(solution)
 
+    fitness_score += non_zero_decision(solution)
+
     return fitness_score
 
 # Function to generate the initial solution
@@ -157,7 +174,6 @@ def generate_initial_solution():
 
 
 def generate_neighbors(solution):
-    # TODO: Find better solution
     neighbors = []
 
     for row in range(BOARD_SIZE):
@@ -225,7 +241,7 @@ def tabu_search():
 
         iterations += 1
 
-    return best_solution
+    return best_solution, 
 
 
 def display(board:np.ndarray):
@@ -239,8 +255,9 @@ def display(board:np.ndarray):
 
 
 if __name__ == "__main__":
-    solution = tabu_search()
-
-    # Print the solution
-    print("Solution:")
-    display(solution)
+    for _ in range(20):
+        solution = tabu_search()
+        # Print the solution
+        print("Solution:")
+        display(solution[0])
+        print("#########################")
